@@ -4,6 +4,7 @@ using Domain;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using Application.Activities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -12,12 +13,12 @@ namespace API.Controllers
 
 
         [HttpGet] //api/activities
-        public async Task<ActionResult<List<Activity>>> GetActivities( )
+        public async Task<ActionResult<List<Activity>>> GetActivities()
         {
             return await Mediator.Send(new List.Query());
 
         }
-
+        [Authorize]
         [HttpGet("{id}")] //api/activities/kdjfkjfk
         public async Task<ActionResult<Activity>> GetActivity(Guid id)
         {
@@ -40,9 +41,10 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteActivity(Guid id){
+        public async Task<IActionResult> DeleteActivity(Guid id)
+        {
 
-            return Ok(await Mediator.Send(new Delete.Command{ Id=id }));
+            return Ok(await Mediator.Send(new Delete.Command { Id = id }));
         }
 
     }
