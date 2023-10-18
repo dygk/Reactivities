@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Activity } from '../models/activity';
-import { resolve } from 'path';
-import { error } from 'console';
+
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -20,13 +19,13 @@ axios.interceptors.response.use(async response => {
         return await Promise.reject(error);
     }
 })
-const responseBody = <T extends any>(response: AxiosResponse<T>) => response.data;
+const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-    get: <T extends any>(url: string) => axios.get<T>(url).then(responseBody),
-    post: <T extends any>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
-    put: <T extends any>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-    del: <T extends any>(url: string) => axios.delete<T>(url).then(responseBody)
+    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
+    put: <T>(url: string, body: object) => axios.put<T>(url, body).then(responseBody),
+    del: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 }
 
 const Activities = {
