@@ -2,7 +2,7 @@ import { Button, Form, FormInput, FormTextArea, Segment } from "semantic-ui-reac
 import {  useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Activity } from "../../../app/models/activity";
 import LoadingComponent from "../../../app/layout/LoadingComponents";
 import { Formik } from "formik";
@@ -10,10 +10,12 @@ import { Formik } from "formik";
 
 export default observer(function ActivityForm() {
     const { activityStore } = useStore();
-    const { createActivity, updateActivity, loading, loadActivity, loadingInitial } = activityStore;
+   // const { createActivity, updateActivity, loading, loadActivity, loadingInitial } = activityStore;
+    const { loading, loadActivity, loadingInitial } = activityStore;
+
 
     const { id } = useParams();
-    const navigate = useNavigate();
+   // const navigate = useNavigate();
     const [activity, setActivity] = useState<Activity>(
         {
             id: '',
