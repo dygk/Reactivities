@@ -36,6 +36,38 @@
                 "${workspaceFolder}/API/API.csproj"
             ],
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "Launch Client App",
+            "type": "shell",
+            "command": "cd ./client-app/;npm start",
+            "windows": {
+              "command": "cd ./client-app/;npm start"
+            },
+            "group": "none",
+            "presentation": {
+              "reveal": "always",
+              "panel": "new"
+            },
+            "runOptions": { 
+                "runOn": "folderOpen" 
+            }
+          },
+          {
+            "label": "Launch  API",
+            "type": "shell",
+            "command": "cd ./API/;dotnet watch --non-interactive",
+            "windows": {
+              "command": "cd ./API/;dotnet watch --non-interactive"
+            },
+            "group": "none",
+            "presentation": {
+              "reveal": "always",
+              "panel": "new"
+            },
+            "runOptions": { 
+                "runOn": "folderOpen" 
+            }
+          }
     ]
 }
