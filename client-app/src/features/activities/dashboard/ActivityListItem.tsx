@@ -24,13 +24,13 @@ export default function ActivityListItem({ activity }: Props) {
                     <Label attached="top" color="red" content="Cancelled" style={{ textAlign: 'center' }} />}
                 <ItemGroup>
                     <Item>
-                        <ItemImage style={{marginBottom:5}} size="tiny" circular src="/assets/user.png" />
+                        <ItemImage style={{ marginBottom: 5 }} size="tiny" circular src={activity.host?.image || "/assets/user.png"} />
                         <ItemContent>
                             <ItemHeader as={Link} to={`/activities/${activity.id}`}>
                                 {activity.title}
                             </ItemHeader>
                             <ItemDescription>
-                                Hosted by {activity.host?.displayName}
+                                Hosted by <Link to={`/profiles/${activity.hostUsername}`} >{activity.host?.displayName}</Link>
                             </ItemDescription>
                             {activity.isHost && (
                                 <ItemDescription>

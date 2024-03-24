@@ -4,6 +4,7 @@ import { User, UserFormValues } from '../models/user';
 import { toast } from 'react-toastify';
 import { router } from '../router/Routes';
 import { store } from '../stores/store';
+import { Photo, Profile } from '../models/profile';
 
 
 const sleep = (delay: number) => {
@@ -28,8 +29,8 @@ axios.interceptors.response.use(async response => {
     const { data, status, config } = error.response as AxiosResponse;
     switch (status) {
         case 400:
-           
-            if (config.method === 'get' &&  Object.prototype.hasOwnProperty.call(data.errors, 'id')) {
+
+            if (config.method === 'get' && Object.prototype.hasOwnProperty.call(data.errors, 'id')) {
                 router.navigate('/not-found');
             }
             if (data.errors) {
@@ -68,30 +69,41 @@ axios.interceptors.response.use(async response => {
 )
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
-    const requests = {
-        get: <T>(url: string) => axios.get<T>(url).then(responseBody),
-            post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
-                put: <T>(url: string, body: object) => axios.put<T>(url, body).then(responseBody),
-                    del: <T>(url: string) => axios.delete<T>(url).then(responseBody)
+const requests = {
+    get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+    post: <T>(url: string, body: object) => axios.post<T>(url, body).then(responseBody),
+    put: <T>(url: string, body: object) => axios.put<T>(url, body).then(responseBody),
+    del: <T>(url: string) => axios.delete<T>(url).then(responseBody)
 }
 
-                        const Activities = {
-                            list: () => requests.get<Activity[]>('/activities'),
-    details :(id:string) => requests.get<Activity>(`/activities/${id}`),
-    create :(activity:ActivityFormValues) => requests.post<void>('/activities/',activity),
-    update :(activity:ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`,activity),
-    delete :(id:string) => requests.del<void>(`/activities/${id}`),
-    attend :(id:string) => requests.post<void>(`/activities/${id}/attend`,{})
+const Activities = {
+    list: () => requests.get<Activity[]>('/activities'),
+    details: (id: string) => requests.get<Activity>(`/activities/${id}`),
+    create: (activity: ActivityFormValues) => requests.post<void>('/activities/', activity),
+    update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
+    delete: (id: string) => requests.del<void>(`/activities/${id}`),
+    attend: (id: string) => requests.post<void>(`/activities/${id}/attend`, {})
 }
 
-                                        const Account= {
-                                            current : () => requests.get<User>('/account'),
+const Account = {
+    current: () => requests.get<User>('/account'),
     login: (user: UserFormValues) => requests.post<User>('/account/login', user),
     register: (user: UserFormValues) => requests.post<User>('/account/register', user)
 }
 
-                                                    const agent = {
-                                                        Activities, Account
-                                                    }
+const Profiles={
+    get : (username:string) => requests.get<Profile>(`/profiles/${username}`),
+    uploadPhoto :(file:Blob) =>{
+        let formData= new FormData();
+        formData.append('File',file);
+        return axios.post<Photo>('photos',formData,{headers:{'Content-Type':'multipart/form-data'}})
+    },
+    setMainPhoto: (id:string) => requests.post(`/photos/${id}/setMain`,{}),
+    deletePhoto : (id:string) => requests.del(`/photos/${id}`)
+}
 
-                                                    export default agent;
+const agent = {
+    Activities, Account, Profiles
+}
+
+export default agent;
