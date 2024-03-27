@@ -5,6 +5,7 @@ import agent from "../api/agent";
 import { format } from "date-fns";
 import { store } from "./store";
 import { Profile } from "../models/profile";
+import { Pagination } from "../models/pagination";
 
 
 export default class ActivityStore {
@@ -13,6 +14,7 @@ export default class ActivityStore {
     editMode = false;
     loading = false;
     loadingInitial = false;
+    pagination: Pagination | null = null;
 
     constructor() {
 
@@ -45,14 +47,15 @@ export default class ActivityStore {
 
         this.loadingInitial = true;
         try {
-            const activities = await agent.Activities.list();
+            const result = await agent.Activities.list();
 
-            activities.forEach(activity => {
+            result.data.forEach(activity => {
                 //activity.date = activity.date!.split('T')[0];
                 this.setActivity(activity);
                 this.activityRegistry.set(activity.id, activity);
 
             })
+            this.setPagination(result.pagination);
             this.setLoadingInitial(false);
 
 
@@ -65,6 +68,9 @@ export default class ActivityStore {
         }
     }
 
+    setPagination = (pagination: Pagination) => {
+        this.pagination = pagination;
+    }
 
     setLoadingInitial = (state: boolean) => {
         this.loadingInitial = state;

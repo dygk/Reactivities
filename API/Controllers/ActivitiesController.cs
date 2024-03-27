@@ -6,6 +6,7 @@ using MediatR;
 using Application.Activities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Update.Internal;
+using Application.Core;
 
 namespace API.Controllers
 {
@@ -14,9 +15,9 @@ namespace API.Controllers
 
 
         [HttpGet] //api/activities
-        public async Task<ActionResult<List<Activity>>> GetActivities()
+        public async Task<ActionResult<List<Activity>>> GetActivities([FromQuery]PagingParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandlePagedResult(await Mediator.Send(new List.Query{Params=param}));
 
         }
 
