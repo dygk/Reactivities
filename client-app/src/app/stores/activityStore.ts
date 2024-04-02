@@ -36,9 +36,9 @@ export default class ActivityStore {
         this.pagingParams = pagingParams;
     }
 
-    setPredicate = (predicate: string, value: string | Date) => {
+    setPredicate = (predicate: string, _value: string | Date) => {
         const resetPredicate = () => {
-            this.predicate.forEach((value, key) => {
+            this.predicate.forEach((_value, key) => {
                 if (key !== 'startDate') this.predicate.delete(key);
             })
         }
@@ -57,7 +57,7 @@ export default class ActivityStore {
                 break;
             case 'startDate':
                 this.predicate.delete('startDate');
-                this.predicate.set('startDate', value);
+                this.predicate.set('startDate', _value);
                 break;
 
             default:

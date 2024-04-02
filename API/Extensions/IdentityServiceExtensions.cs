@@ -22,7 +22,7 @@ namespace API.Extensions
                 opt.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<DataContext>();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my custom Secret key for authenticationthis is my custom Secret key for authentication"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"]));
 
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

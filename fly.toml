@@ -1,0 +1,26 @@
+# fly.toml app configuration file generated for duygukreactivities on 2024-04-01T22:57:44+04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'duygukreactivities'
+primary_region = 'ams'
+
+[build]
+  image = 'duygukayabasi/reactivities:latest'
+
+[env]
+  ASPNETCORE_URLS="http://+:8080"
+  Cloudinary__CloudName="dbqyjifsa"
+  Cloudinary__ApiKey="884484219964991" 
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  size = 'shared-cpu-1x'
